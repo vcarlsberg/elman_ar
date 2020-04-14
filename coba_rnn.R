@@ -1,6 +1,7 @@
 library(nnfor)
 library(tidyverse)
 library(NMOF)
+library(readxl)
 require(RSNNS)
 require(quantmod)
 require(Metrics)
@@ -71,11 +72,11 @@ for(iter in c(1:fh))
   {
     fit<-elman(x=inputs,
                y=outputs,
-               size=c(5,10,3),
+               size=c(3,5,2),
                maxit=500)
     plotIterativeError(fit)
     
-    print(Metrics::mape(unscale(outputs,norm.data=input.df.scaled),
+    print(Metrics::rmse(unscale(outputs,norm.data=input.df.scaled),
                   unscale(fit$fitted.values,norm.data=input.df.scaled)))
   }
   
@@ -106,21 +107,6 @@ for(iter in c(1:fh))
   input.df<-rbind(input.df,combined)
 }
 
-
-#copy.input.df<-input.df
-#copy.input.df<-rbind(copy.input.df,combined)
-
-
-#xxx<-cbind(V1,transpose.test)
-#unscale(xxx,norm.data = store.df)
-#aaa<-input.df
-#input.df<-rbind(input.df,xxx)
-#rownames(input.df) <- NULL
-
-#unscale data
-#xxxx<-unscale(input.df,norm.data=store.df)
-
-#nnetar.model<-forecast::nnetar(y=outputs,size = 60)
-#forecast::accuracy(nnetar.model)
-
-#lags.select(ts(outputs))
+rownames(input.df) <- NULL
+predicted.value<-input.df[(dim(input.df)[1]-fh):(dim(input.df)[1])*1,1]
+print(predicted.value)
