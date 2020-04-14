@@ -1,24 +1,19 @@
-library(forecast)
-library(fable)
-library(forecastHybrid)
-library(nnet)
-library(readxl)
-library(GA)
-library(Metrics)
+library(nnfor)
 library(tidyverse)
-library(TSrepr)
-library(smooth)
-library(forecTheta)
-library(thief)
-library(svrpath)
-library(e1071)
 library(NMOF)
+require(RSNNS)
+require(quantmod)
+require(Metrics)
+library(forecast)
+library(tsDyn)
+library(vars)
+library(DMwR)
 
 
 Dataset_Surabaya <- read_excel("C:/Users/asus/OneDrive - Institut Teknologi Sepuluh Nopember/Kuliah/Thesis/Dataset_Surabaya.xlsx")
 data_outflow<-data.frame(tahun=Dataset_Surabaya[["Tahun"]],
                          bulan=Dataset_Surabaya[["Bulan"]],
-                         y=Dataset_Surabaya[["K20000"]])
+                         y=Dataset_Surabaya[["K50000"]])
 data_outflow$bulan<-match(data_outflow$bulan,month.abb)
 data_outflow<-na.omit(data_outflow)
 head<-head(data_outflow)
@@ -37,14 +32,8 @@ myts<-window(dataset_outflow,start=c(2014,1),end=c(2017,12))
 myts_2018<-window(dataset_outflow,start=c(2018,1),end=c(2018,12))
 
 
-require(RSNNS)
-require(quantmod)
-require(Metrics)
-library(forecast)
-library(tsDyn)
-library(vars)
-library(DMwR)
-slog<-(read.csv("logistic-x.csv",F))
+
+#slog<-(read.csv("logistic-x.csv",F))
 slog<-myts[1:length(myts)]
 
 input.df<-data.frame(y=slog)
