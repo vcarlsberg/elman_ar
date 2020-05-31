@@ -14,7 +14,7 @@ library(DMwR)
 Dataset_Surabaya <- read_excel("C:/Users/asus/OneDrive - Institut Teknologi Sepuluh Nopember/Kuliah/Thesis/Dataset_Surabaya.xlsx")
 data_outflow<-data.frame(tahun=Dataset_Surabaya[["Tahun"]],
                          bulan=Dataset_Surabaya[["Bulan"]],
-                         y=Dataset_Surabaya[["K50000"]])
+                         y=Dataset_Surabaya[["K20000"]])
 data_outflow$bulan<-match(data_outflow$bulan,month.abb)
 data_outflow<-na.omit(data_outflow)
 head<-head(data_outflow)
@@ -29,7 +29,7 @@ data_outflow.ts<-ts(data_outflow[["y"]])
 
 dataset_outflow <- ts(data_outflow[["y"]],start=c(head[1,1], head[1,2]), end=c(2019, 12), frequency=12)
 #myts <- ts(data_outflow_10000, frequency=12)
-myts<-window(dataset_outflow,start=c(2014,1),end=c(2017,12))
+myts<-window(dataset_outflow,start=c(2012,1),end=c(2017,12))
 myts_2018<-window(dataset_outflow,start=c(2018,1),end=c(2018,12))
 
 
@@ -43,7 +43,7 @@ input.df<-data.frame(y=slog)
 #select lag
 var.select<-VARselect(slog)
 optimum.aic<-var.select[["selection"]][["AIC(n)"]]
-optimum.aic<-12
+optimum.aic<-20
 
 #m <- cbind(1, 1:7)
 #m<-cbind(m,3:10)
@@ -72,7 +72,7 @@ for(iter in c(1:fh))
   {
     fit<-elman(x=inputs,
                y=outputs,
-               size=c(3,5,2),
+               size=c(3,5),
                maxit=500)
     plotIterativeError(fit)
     
